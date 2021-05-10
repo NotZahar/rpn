@@ -232,12 +232,11 @@ int main()
 			rpn.push_back(std::string() + operation_stack.top());
 			operation_stack.pop();
 		}
-		addadsdsdsdfdsfsfffsf
-		sfdfsfdsasassdsfsffsf
-			asasasdassadadadaddsdsdsdsfsf
-			// end of main processingd
 
-			std::string choice;
+
+	    // end of main processingd
+
+	    std::string choice;
 		bool main_exit = false;
 		while (1)
 		{
