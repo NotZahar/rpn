@@ -47,11 +47,13 @@ int main()
 	std::vector<std::string> rpn;
 	std::stack<char> operation_stack;
 	std::stack<std::string> calculation_stack;
-	int k;
+	std::vector<std::vector<int>> table;
+	int k, number_of_variables;
 
 	while (1)
 	{
 		k = -1;
+		number_of_variables = 0;
 		input_k.clear();
 		input_func.clear();
 		rpn.clear();
@@ -153,6 +155,7 @@ int main()
 			if (current_symbol > 96 && current_symbol < 123)
 			{
 				rpn.push_back(std::string() + current_symbol);
+				number_of_variables++;
 			}
 			else if (current_symbol > 47 && current_symbol < 58)
 			{
@@ -163,6 +166,7 @@ int main()
 				}
 				rpn.push_back(input_func.substr(i, counter));
 				i = i + counter - 1;
+				number_of_variables++;
 			}
 			else if (current_symbol == '(')
 			{
@@ -238,7 +242,11 @@ int main()
 			operation_stack.pop();
 		}
 
-		
+		for ()
+		{
+			d
+		}
+		table
 		
 		
 		for (size_t i = 0u; i < rpn.size(); i++)
