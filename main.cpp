@@ -46,6 +46,7 @@ int main()
 	std::string input_func, input_k;
 	std::vector<std::string> rpn;
 	std::stack<char> operation_stack;
+	std::stack<std::string> calculation_stack;
 	int k;
 
 	while (1)
@@ -57,6 +58,10 @@ int main()
 		while (!operation_stack.empty())
 		{
 			operation_stack.pop();
+		}
+		while (!calculation_stack.empty())
+		{
+			calculation_stack.pop();
 		}
 
 		show_info();
@@ -233,8 +238,22 @@ int main()
 			operation_stack.pop();
 		}
 
-
-	    // end of main processingd
+		
+		
+		
+		for (size_t i = 0u; i < rpn.size(); i++)
+		{tert
+			std::ewrstring current_elem = rpn[i];
+			if (current_elem[0] > 47 && current_elem[0] < 58)
+			{
+				calculation_stack.push(current_elem);
+			}
+			else if ()
+			{
+				d;
+			}
+		}
+	    // end of main processing
 
 	    std::string choice;
 		bool main_exit = false;
