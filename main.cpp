@@ -3,6 +3,7 @@
 #include <vector>
 #include <stack>
 #include <algorithm>
+#include <cmath>
 
 enum class operation_priorities
 {
@@ -48,12 +49,12 @@ int main()
 	std::stack<char> operation_stack;
 	std::stack<std::string> calculation_stack;
 	std::vector<std::vector<int>> table;
-	int k, number_of_variables;
+	std::vector<char> list_of_variables;
+	int k;
 
 	while (1)
 	{
 		k = -1;
-		number_of_variables = 0;
 		input_k.clear();
 		input_func.clear();
 		rpn.clear();
@@ -65,6 +66,12 @@ int main()
 		{
 			calculation_stack.pop();
 		}
+		for (size_t i = 0u; i < table.size(); i++)
+		{
+			table[i].clear();
+		}
+		table.clear();
+		list_of_variables.clear();
 
 		show_info();
 
@@ -155,7 +162,11 @@ int main()
 			if (current_symbol > 96 && current_symbol < 123)
 			{
 				rpn.push_back(std::string() + current_symbol);
-				number_of_variables++;
+				auto add_condition = std::find(list_of_variables.begin(), list_of_variables.end(), current_symbol);
+				if (add_condition == list_of_variables.end())
+				{
+					list_of_variables.push_back(current_symbol);
+				}
 			}
 			else if (current_symbol > 47 && current_symbol < 58)
 			{
@@ -166,7 +177,6 @@ int main()
 				}
 				rpn.push_back(input_func.substr(i, counter));
 				i = i + counter - 1;
-				number_of_variables++;
 			}
 			else if (current_symbol == '(')
 			{
@@ -242,11 +252,30 @@ int main()
 			operation_stack.pop();
 		}
 
-		for ()
+		size_t length = list_of_variables.size();
+		size_t width = static_cast<size_t>(pow(k, length));
+		for (int i = 0; i < length; i++)
 		{
-			d
+			table.push_back(std::vector<int>());
 		}
-		table
+
+		int value, step = width;
+		for (int i = 0; i < length; i++)
+		{
+			value = 0;
+			step = step / k;
+			for (int j = 0; j < width; j++)
+			{
+				if (j < border)
+				{
+					table[i].push_back(value);
+				}
+				else
+				{
+					value++;
+				}
+			}
+		}
 		
 		
 		for (size_t i = 0u; i < rpn.size(); i++)
