@@ -40,6 +40,11 @@ void show_info()
 	std::cout << "standard form: 1st form";
 }
 
+int number_of_digits(int number)
+{ 
+	return (number /= 10) ? 1 + number_of_digits(number) : 1;
+}
+
 int main()
 {
 	system("color F0");
@@ -252,23 +257,29 @@ int main()
 			operation_stack.pop();
 		}
 
-		size_t length = list_of_variables.size();
-		size_t width = static_cast<size_t>(pow(k, length));
-		for (int i = 0; i < length; i++)
+		size_t table_length = list_of_variables.size();
+		size_t table_width = static_cast<size_t>(std::pow(k, table_length));
+		for (size_t i = 0u; i < table_length; i++)
 		{
 			table.push_back(std::vector<int>());
 		}
 
-		int value, step = width;
-		for (int i = 0; i < length; i++)
+		int value;
+		size_t step = table_width;
+		for (size_t i = 0u; i < table_length; i++)
 		{
 			value = 0;
-			step = step / k;
-			for (int j = 0; j < width; j++)
+			step = step / static_cast<size_t>(k);
+			for (size_t t = 0u; t < static_cast<size_t>(std::pow(k, i + 1)); t++)
 			{
-				if (j < border)
+				for (size_t j = 0u; j < step; j++)
 				{
 					table[i].push_back(value);
+				}
+				
+				if (value == k - 1)
+				{
+					value = 0;
 				}
 				else
 				{
@@ -277,8 +288,38 @@ int main()
 			}
 		}
 		
-		
-		for (size_t i = 0u; i < rpn.size(); i++)
+		std::cout << "\n\ntable:\n\n";
+		for (size_t i = 0u; i < table_length; i++)
+		{
+			std::cout << list_of_variables[i];
+			if (i != table_length - 1u)
+			{
+				for (int j = 0; j < number_of_digits(k - 1); j++)
+				{
+					std::cout << ' ';
+				}
+			}
+		}
+		std::cout << "  f\n";
+		for (size_t i = 0u; i < table_width; i++)
+		{
+			for (size_t j = 0u; j < table_length; j++)
+			{
+				std::cout << table[j][i];
+				if (j == table_length - 1u)
+				{
+					std::cout << "  ";
+				}
+				else
+				{
+					std::cout << ' ';
+				}
+			}
+			std::cout << '\n';
+		}
+
+
+		/*for (size_t i = 0u; i < rpn.size(); i++)
 		{tert
 			std::ewrstring current_elem = rpn[i];
 			if (current_elem[0] > 47 && current_elem[0] < 58)
@@ -289,7 +330,7 @@ int main()
 			{
 				d;
 			}
-		}
+		}*/
 	    // end of main processing
 
 	    std::string choice;
