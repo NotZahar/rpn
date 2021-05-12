@@ -52,7 +52,7 @@ int main()
 	std::string input_func, input_k;
 	std::vector<std::string> rpn;
 	std::stack<char> operation_stack;
-	std::stack<std::string> calculation_stack;
+	std::stack<int> calculation_stack;
 	std::vector<std::vector<int>> table;
 	std::vector<char> list_of_variables;
 	std::vector<int> list_of_function_values;
@@ -297,7 +297,7 @@ int main()
 				std::string current_elem = rpn[i];
 				if (current_elem[0] > 47 && current_elem[0] < 58)
 				{
-					calculation_stack.push(current_elem);
+					calculation_stack.push(std::stoi(current_elem));
 				}
 				else if (current_elem[0] > 96 && current_elem[0] < 123)
 				{
@@ -305,11 +305,77 @@ int main()
 					auto iterator = std::find(list_of_variables.begin(), list_of_variables.end(), variable);
 					size_t index = std::distance(list_of_variables.begin(), iterator);
 
-					calculation_stack.push(table[][]);
+					calculation_stack.push(table[index][t]);
 				}
+				else if (current_elem[0] == '*')
+				{
+					if (calculation_stack.empty())
+					{
+						invalid_function = true;
+						break;
+					}
+					int operand_1 = calculation_stack.top();
+					calculation_stack.pop();
+					if (calculation_stack.empty())
+					{
+						invalid_function = true;
+						break;
+					}
+					int operand_2 = calculation_stack.top();
+					calculation_stack.pop();
+
+					if (current_elem[0] == '*')
+					{
+						calculation_stack.push((operand_1 * operand_2) % k);
+					}
+				}
+				else if (current_elem[0] == '-')
+				{
+					if (calculation_stack.empty())
+					{
+						invalid_function = true;
+						break;
+					}
+					int operand = calculation_stack.top();
+					calculation_stack.pop();
+
+					if (current_elem[0] == '-')
+					{
+						if (operand == 0)
+						{
+							calculation_stack.push(0);
+						}
+						else
+						{
+							calculation_stack.push(k - operand);
+						}
+					}
+				}
+			}
+
+			if (invalid_function)
+			{
+				break;
+			}
+
+			if (calculation_stack.size() > 1u)
+			{
+				invalid_function = true;
+				break;
+			}
+			else
+			{
+				list_of_function_values.push_back(calculation_stack.top());
+				calculation_stack.pop();
 			}
 		}
 	    
+		if (invalid_function)
+		{
+			std::cout << "\n\ninvalid function";
+			continue;
+		}
+
 		std::cout << "\n\ntable:\n\n";
 		for (size_t i = 0u; i < table_length; i++)
 		{
@@ -330,7 +396,7 @@ int main()
 				std::cout << table[j][i];
 				if (j == table_length - 1u)
 				{
-					std::cout << "  ";
+					std::cout << "  " << list_of_function_values[i];
 				}
 				else
 				{
