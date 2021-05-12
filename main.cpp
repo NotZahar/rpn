@@ -55,6 +55,7 @@ int main()
 	std::stack<std::string> calculation_stack;
 	std::vector<std::vector<int>> table;
 	std::vector<char> list_of_variables;
+	std::vector<int> list_of_function_values;
 	int k;
 
 	while (1)
@@ -77,6 +78,7 @@ int main()
 		}
 		table.clear();
 		list_of_variables.clear();
+		list_of_function_values.clear();
 
 		show_info();
 
@@ -287,7 +289,27 @@ int main()
 				}
 			}
 		}
-		
+
+		for (size_t t = 0u; t < table_width; t++)
+		{
+			for (size_t i = 0u; i < rpn.size(); i++)
+			{
+				std::string current_elem = rpn[i];
+				if (current_elem[0] > 47 && current_elem[0] < 58)
+				{
+					calculation_stack.push(current_elem);
+				}
+				else if (current_elem[0] > 96 && current_elem[0] < 123)
+				{
+					char variable = current_elem[0];
+					auto iterator = std::find(list_of_variables.begin(), list_of_variables.end(), variable);
+					size_t index = std::distance(list_of_variables.begin(), iterator);
+
+					calculation_stack.push(table[][]);
+				}
+			}
+		}
+	    
 		std::cout << "\n\ntable:\n\n";
 		for (size_t i = 0u; i < table_length; i++)
 		{
@@ -317,21 +339,7 @@ int main()
 			}
 			std::cout << '\n';
 		}
-
-
-		/*for (size_t i = 0u; i < rpn.size(); i++)
-		{tert
-			std::ewrstring current_elem = rpn[i];
-			if (current_elem[0] > 47 && current_elem[0] < 58)
-			{
-				calculation_stack.push(current_elem);
-			}
-			else if ()
-			{
-				d;
-			}
-		}*/
-	    // end of main processing
+		// end of main processing
 
 	    std::string choice;
 		bool main_exit = false;
