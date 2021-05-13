@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iomanip>
+#include <boost/algorithm/string.hpp>
 
 enum class operation_priorities
 {
@@ -50,13 +51,13 @@ int main()
 {
 	system("color F0");
 
-	std::string input_func, input_k;
+	std::string input_func, input_k, input_E;
 	std::vector<std::string> rpn;
 	std::stack<char> operation_stack;
 	std::stack<int> calculation_stack;
-	std::vector<std::vector<int>> table;
+	std::vector<std::vector<int>> table, table_E;
 	std::vector<char> list_of_variables;
-	std::vector<int> list_of_function_values;
+	std::vector<int> list_of_function_values, E;
 	int k;
 
 	while (1)
@@ -64,6 +65,7 @@ int main()
 		k = -1;
 		input_k.clear();
 		input_func.clear();
+		input_E.clear();
 		rpn.clear();
 		while (!operation_stack.empty())
 		{
@@ -78,8 +80,14 @@ int main()
 			table[i].clear();
 		}
 		table.clear();
+		for (size_t i = 0u; i < table_E.size(); i++)
+		{
+			table_E[i].clear();
+		}
+		table_E.clear();
 		list_of_variables.clear();
 		list_of_function_values.clear();
+		E.clear();
 
 		show_info();
 
@@ -478,6 +486,85 @@ int main()
 					std::cout << " v ";
 				}
 			}
+		}
+
+		std::cout << '\n';
+		std::vector<std::string> input_E_result, input_E_result_final;
+		bool wrong_input;
+		while (1)
+		{
+			input_E_result.clear();
+			input_E_result_final.clear();
+			input_E.clear();
+			wrong_input = false;
+			E.clear();
+
+			std::cout << "\nenter the E (in this format: 1 2 3 ...): ";
+			std::getline(std::cin, input_E);
+
+			if (input_E.empty())
+			{
+				continue;
+			}
+
+			boost::split(input_E_result, input_E, boost::is_any_of(" "));
+			for (auto& str : input_E_result)
+			{
+				if (!str.empty())
+				{
+					input_E_result_final.push_back(str);
+				}
+			}
+
+			for (auto& str : input_E_result_final)
+			{
+				try
+				{
+					int e = std::stoi(str);
+					E.push_back(e);
+				}
+				catch (std::invalid_argument)
+				{
+					wrong_input = true;
+					break;
+				}
+				catch (std::out_of_range)
+				{
+					wrong_input = true;
+					break;
+				}
+			}
+
+			if (wrong_input)
+			{
+				continue;
+			}
+			else
+			{
+				for (auto& e : E)
+				{
+					if (e > k - 1)
+					{
+						wrong_input = true;
+						break;
+					}
+				}
+
+				if (wrong_input)
+				{
+					continue;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		std::cout << '\n';
+		for (auto i : E)
+		{
+			std::cout << i << ' ';
 		}
 		// end of main processing
 
