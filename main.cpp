@@ -37,7 +37,7 @@ void show_info()
 	std::cout << "\n\n";
 	std::cout << "Glukhov N. V.\n";
 	std::cout << "g. 4211  n. 8\n";
-	std::cout << "functions: -x;  x * y\n";
+	std::cout << "functions: -x;  x*y\n";
 	std::cout << "standard form: 1st form";
 }
 
@@ -422,7 +422,6 @@ int main()
 		}
 		std::cout << std::setw(6) << std::left << 'f';
 		std::cout << '\n';
-
 		for (size_t i = 0u; i < table_width; i++)
 		{
 			for (size_t j = 0u; j < table_length; j++)
@@ -434,6 +433,51 @@ int main()
 				}
 			}
 			std::cout << '\n';
+		}
+
+		size_t number_of_variables = list_of_variables.size();
+		std::cout << "\nf(";
+		for (size_t i = 0u; i < number_of_variables; i++)
+		{
+			std::cout << list_of_variables[i];
+			if (i != number_of_variables - 1u)
+			{
+				std::cout << ", ";
+			}
+		}
+		std::cout << ") = ";
+		for (size_t i = 0u; i < table_width; i++)
+		{
+			if (list_of_function_values[i] != 0)
+			{
+				if (list_of_function_values[i] != k - 1)
+				{
+					std::cout << list_of_function_values[i];
+					for (size_t j = 0u; j < table_length; j++)
+					{
+						std::cout << "&J_" << table[j][i] << '(' << list_of_variables[j] << ')';
+					}
+				}
+				else
+				{
+					for (size_t j = 0u; j < table_length; j++)
+					{
+						if (j == 0u)
+						{
+							std::cout << "J_" << table[j][i] << '(' << list_of_variables[j] << ')';
+						}
+						else
+						{
+							std::cout << "&J_" << table[j][i] << '(' << list_of_variables[j] << ')';
+						}
+					}
+				}
+				
+				if (i != table_width - 1u)
+				{
+					std::cout << " v ";
+				}
+			}
 		}
 		// end of main processing
 
