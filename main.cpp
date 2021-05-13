@@ -4,6 +4,7 @@
 #include <stack>
 #include <algorithm>
 #include <cmath>
+#include <iomanip>
 
 enum class operation_priorities
 {
@@ -158,6 +159,12 @@ int main()
 			}
 		}
 
+		if (input_func == "")
+		{
+			std::cout << "\ninvalid function";
+			continue;
+		}
+
 		std::cout << "the function is: " << input_func;
 
 		// main processing
@@ -189,7 +196,7 @@ int main()
 			{
 				operation_stack.push(current_symbol);
 			}
-			else if (current_symbol == '*' || current_symbol == '-')
+			else if (current_symbol == '*')
 			{
 				if (operation_stack.empty())
 				{
@@ -202,6 +209,32 @@ int main()
 				else if (get_priority(operation_stack.top()) >= get_priority(current_symbol))
 				{
 					while (get_priority(operation_stack.top()) >= get_priority(current_symbol))
+					{
+						rpn.push_back(std::string() + operation_stack.top());
+						operation_stack.pop();
+
+						if (operation_stack.empty())
+						{
+							break;
+						}
+					}
+
+					operation_stack.push(current_symbol);
+				}
+			}
+			else if (current_symbol == '-')
+			{
+				if (operation_stack.empty())
+				{
+					operation_stack.push(current_symbol);
+				}
+				else if (get_priority(operation_stack.top()) <= get_priority(current_symbol))
+				{
+					operation_stack.push(current_symbol);
+				}
+				else if (get_priority(operation_stack.top()) > get_priority(current_symbol))
+				{
+					while (get_priority(operation_stack.top()) > get_priority(current_symbol))
 					{
 						rpn.push_back(std::string() + operation_stack.top());
 						operation_stack.pop();
@@ -258,6 +291,12 @@ int main()
 			rpn.push_back(std::string() + operation_stack.top());
 			operation_stack.pop();
 		}
+
+		/*std::cout << "\n\nrpn: ";
+		for (auto a : rpn)
+		{
+			std::cout << a;
+		}*/
 
 		size_t table_length = list_of_variables.size();
 		size_t table_width = static_cast<size_t>(std::pow(k, table_length));
@@ -379,28 +418,19 @@ int main()
 		std::cout << "\n\ntable:\n\n";
 		for (size_t i = 0u; i < table_length; i++)
 		{
-			std::cout << list_of_variables[i];
-			if (i != table_length - 1u)
-			{
-				for (int j = 0; j < number_of_digits(k - 1); j++)
-				{
-					std::cout << ' ';
-				}
-			}
+			std::cout << std::setw(6) << std::left << list_of_variables[i];
 		}
-		std::cout << "  f\n";
+		std::cout << std::setw(6) << std::left << 'f';
+		std::cout << '\n';
+
 		for (size_t i = 0u; i < table_width; i++)
 		{
 			for (size_t j = 0u; j < table_length; j++)
 			{
-				std::cout << table[j][i];
+				std::cout << std::setw(6) << std::left << table[j][i];
 				if (j == table_length - 1u)
 				{
-					std::cout << "  " << list_of_function_values[i];
-				}
-				else
-				{
-					std::cout << ' ';
+					std::cout << std::setw(6) << std::left << list_of_function_values[i];
 				}
 			}
 			std::cout << '\n';
