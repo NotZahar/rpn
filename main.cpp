@@ -57,7 +57,7 @@ int main()
 	std::stack<int> calculation_stack;
 	std::vector<std::vector<int>> table, table_E;
 	std::vector<char> list_of_variables;
-	std::vector<int> list_of_function_values, E;
+	std::vector<int> list_of_function_values, E, aux_E;
 	int k;
 
 	while (1)
@@ -88,6 +88,7 @@ int main()
 		list_of_variables.clear();
 		list_of_function_values.clear();
 		E.clear();
+		aux_E.clear();
 
 		show_info();
 
@@ -300,12 +301,6 @@ int main()
 			operation_stack.pop();
 		}
 
-		/*std::cout << "\n\nrpn: ";
-		for (auto a : rpn)
-		{
-			std::cout << a;
-		}*/
-
 		size_t table_length = list_of_variables.size();
 		size_t table_width = static_cast<size_t>(std::pow(k, table_length));
 		for (size_t i = 0u; i < table_length; i++)
@@ -497,7 +492,7 @@ int main()
 			input_E_result_final.clear();
 			input_E.clear();
 			wrong_input = false;
-			E.clear();
+			aux_E.clear();
 
 			std::cout << "\nenter the E (in this format: 1 2 3 ...): ";
 			std::getline(std::cin, input_E);
@@ -521,7 +516,7 @@ int main()
 				try
 				{
 					int e = std::stoi(str);
-					E.push_back(e);
+					aux_E.push_back(e);
 				}
 				catch (std::invalid_argument)
 				{
@@ -541,7 +536,7 @@ int main()
 			}
 			else
 			{
-				for (auto& e : E)
+				for (int& e : aux_E)
 				{
 					if (e > k - 1)
 					{
@@ -561,11 +556,21 @@ int main()
 			}
 		}
 
-		std::cout << '\n';
-		for (auto i : E)
+		for (int& i : aux_E)
 		{
-			std::cout << i << ' ';
+			auto iterator = std::find(E.begin(), E.end(), i);
+			if (iterator == E.end())
+			{
+				E.push_back(i);
+			}
 		}
+
+		size_t table_E_length = E.size();
+		/*size_t table_width = static_cast<size_t>(std::pow(k, table_length));
+		for (size_t i = 0u; i < table_length; i++)
+		{
+			table.push_back(std::vector<int>());
+		}*/
 		// end of main processing
 
 	    std::string choice;
