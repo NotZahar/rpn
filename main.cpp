@@ -556,21 +556,49 @@ int main()
 			}
 		}
 
-		for (int& i : aux_E)
+		for (int& e : aux_E)
 		{
-			auto iterator = std::find(E.begin(), E.end(), i);
+			auto iterator = std::find(E.begin(), E.end(), e);
 			if (iterator == E.end())
 			{
-				E.push_back(i);
+				E.push_back(e);
+			}
+		}
+		std::sort(E.begin(), E.end());
+
+		size_t E_length = E.size();
+		size_t table_E_length = table_length;
+		size_t table_E_width = static_cast<size_t>(std::pow(E_length, table_E_length));
+		for (size_t i = 0u; i < table_E_length; i++)
+		{
+			table_E.push_back(std::vector<int>());
+		}
+
+		size_t i_E;
+		size_t step_E = table_E_width;
+		for (size_t i = 0u; i < table_E_length; i++)
+		{
+			i_E = 0;
+			step_E = step_E / E_length;
+			for (size_t t = 0u; t < static_cast<size_t>(std::pow(E_length, i + 1)); t++)
+			{
+				for (size_t j = 0u; j < step_E; j++)
+				{
+					table_E[i].push_back(E[i_E]);
+				}
+
+				if (i_E == E_length - 1)
+				{
+					i_E = 0;
+				}
+				else
+				{
+					i_E++;
+				}
 			}
 		}
 
-		size_t table_E_length = E.size();
-		/*size_t table_width = static_cast<size_t>(std::pow(k, table_length));
-		for (size_t i = 0u; i < table_length; i++)
-		{
-			table.push_back(std::vector<int>());
-		}*/
+
 		// end of main processing
 
 	    std::string choice;
