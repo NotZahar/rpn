@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iomanip>
+#include <map>
 #include <boost/algorithm/string.hpp>
 
 enum class operation_priorities
@@ -58,6 +59,7 @@ int main()
 	std::vector<std::vector<int>> table, table_E;
 	std::vector<char> list_of_variables;
 	std::vector<int> list_of_function_values, E, aux_E;
+	std::map <std::vector<int>, int> map_table;
 	int k;
 
 	while (1)
@@ -89,6 +91,7 @@ int main()
 		list_of_function_values.clear();
 		E.clear();
 		aux_E.clear();
+		map_table.clear();
 
 		show_info();
 
@@ -598,7 +601,53 @@ int main()
 			}
 		}
 
+		for (size_t i = 0u; i < table_width; i++)
+		{
+			std::vector<int> tmp;
+			for (size_t j = 0u; j < table_length; j++)
+			{
+				tmp.push_back(table[j][i]);
+			}
+			map_table.insert(std::make_pair(tmp, list_of_function_values[i]));
+		}
 
+		bool function_belongs_to_the_class = true;
+		for (size_t i = 0u; i < table_E_width; i++)
+		{
+			std::vector<int> tmp;
+			for (size_t j = 0u; j < table_E_length; j++)
+			{
+				tmp.push_back(table_E[j][i]);
+			}
+
+			auto it = map_table.find(tmp);
+			auto it_2 = std::find(E.begin(), E.end(), it->second);
+			if (it_2 == E.end())
+			{
+				function_belongs_to_the_class = false;
+				break;
+			}
+		}
+
+		std::cout << "\nfunction ";
+		if (function_belongs_to_the_class)
+		{
+			std::cout << "belongs";
+		}
+		else
+		{
+			std::cout << "doesn't belong";
+		}
+		std::cout << " to the class T({";
+		for (size_t i = 0u; i < E_length; i++)
+		{
+			std::cout << E[i];
+			if (i != E_length - 1u)
+			{
+				std::cout << ", ";
+			}
+		}
+		std::cout << "})";
 		// end of main processing
 
 	    std::string choice;
